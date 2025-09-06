@@ -29,8 +29,14 @@ jobs:
       - name: Run RecompModTool
         run: ./RecompModTool mod.toml build
 
+      - name: Get mod version
+        id: get_version
+        run: |
+          VERSION=$(grep '^version' mod.toml | head -n1 | cut -d '"' -f2)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: nrm-artifact
+          name: keraion-InstantBlastMask-${{ steps.get_version.outputs.version }}
           path: build/*.nrm
